@@ -1,0 +1,40 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Ingredient {
+  id               String             @id @default(cuid())
+  name             String
+  description      String
+  isAlcoholic      Boolean
+  imageUrl         String?
+  IngredientAmount IngredientAmount[]
+}
+
+model IngredientAmount {
+  id           String     @id @default(cuid())
+  ingredient   Ingredient @relation(fields: [ingredientId], references: [id])
+  amount       Int
+  ingredientId String
+  Cocktail     Cocktail?  @relation(fields: [cocktailId], references: [id])
+  cocktailId   String?
+}
+
+model Cocktail {
+  id                String             @id @default(cuid())
+  name              String
+  category          String
+  recipe            String
+  ingredientAmounts IngredientAmount[]
+}
