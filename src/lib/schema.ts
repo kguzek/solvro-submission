@@ -24,3 +24,22 @@ export const cocktailCreateSchema = z.object({
   ),
 });
 
+export const cocktailUpdateSchema = z.object({
+  id: z.string({ required_error: "Id koktajlu jest wymagane" }),
+  name: z.string({ required_error: "Nazwa koktajlu jest wymagana" }),
+  category: z.string({ required_error: "Kategoria koktajlu jest wymagana" }),
+  recipe: z.string({ required_error: "Instrukcja koktajlu jest wymagana" }),
+  ingredients: z.array(
+    z.object({
+      ingredient: ingredientSchema,
+      amount: z.number(),
+    }),
+    {
+      required_error: "Lista składników jest wymagana",
+    }
+  ),
+});
+
+export const cocktailDeleteSchema = z.string({
+  required_error: "Id koktajlu jest wymagane",
+});
